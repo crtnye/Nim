@@ -1,4 +1,4 @@
-#include "TicTacToe.h"
+#include "nim.h"
 #include <WinSock2.h>
 #include <iostream>
 
@@ -30,8 +30,8 @@ int getServers(SOCKET s, const char *broadcastAddress, const char *broadcastPort
 /****			
 Task 3: Add code here that will send the TicTacToe_QUERY message to the broadcastAddress using the broadcastPort (see function header).
 ****/
-	char* TicTacToe_QUERY_Mutable = (char*)TicTacToe_QUERY;
-	int numBytesSent = UDP_send(s, TicTacToe_QUERY_Mutable, strlen(TicTacToe_QUERY), broadcastAddress, broadcastPort);
+	char* TicTacToe_QUERY_Mutable = (char*)NIM_QUERY;
+	int numBytesSent = UDP_send(s, TicTacToe_QUERY_Mutable, strlen(NIM_QUERY), broadcastAddress, broadcastPort);
 
 	// Receive incoming UDP datagrams (with a maximum of 2 second wait before each UDP_recv() function call
 	// As you read datagrams, if they start with the prefix: TicTacToe_NAME, parse out the server's name
@@ -58,11 +58,11 @@ Task 4b: Inside this while loop, parse the response, which should be a C-string 
 		 (iii) assign the server's port number to serverArray[numServers].port
 		 (iv) increment numServers
 ****/
-			char* isName = strstr(recvBuffer, TicTacToe_NAME);
+			char* isName = strstr(recvBuffer, NIM_NAME);
 			if (isName != NULL) {
 
 				std::string fullname = recvBuffer;
-				std::string nameOnly = fullname.substr(strlen(TicTacToe_NAME));
+				std::string nameOnly = fullname.substr(strlen(NIM_NAME));
 
 				serverArray[numServers].name = nameOnly.c_str();
 				serverArray[numServers].host = broadcastAddress;

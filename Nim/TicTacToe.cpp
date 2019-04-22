@@ -2,7 +2,7 @@
 
 // This program plays Tic-Tac-Toe with other computers across the network using the UDP protocol.
 
-#include "TicTacToe.h"
+#include "nim.h"
 #include <iostream>
 #include <string>
 #include <WinSock2.h>

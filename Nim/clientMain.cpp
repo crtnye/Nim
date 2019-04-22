@@ -1,6 +1,6 @@
 // clientMain.cpp
 //   This function serves as the "main" function for the client-side
-#include "TicTacToe.h"
+#include "nim.h"
 #include <iostream>
 #include <string>
 #include <WinSock2.h>
@@ -64,7 +64,7 @@ int clientMain(int argc, char *argv[], std::string playerName)
 
 			// Append playerName to the TicTacToe_CHALLENGE string & send a challenge to host:port
 			char buffer[MAX_SEND_BUF];
-			strcpy_s(buffer,TicTacToe_CHALLENGE);
+			strcpy_s(buffer,NIM_CHALLENGE);
 			strcat_s(buffer,playerName.c_str());
 			int len = UDP_send(s, buffer, strlen(buffer)+1,(char*)host.c_str(), (char*)port.c_str());
 

@@ -12,8 +12,8 @@ static char NIM_UDPPORT[] = "29333";
 const int v4AddressSize = 16;
 const int portNumberSize = 10;
 const int WAIT_TIME = 120;
-const int MAX_SEND_BUFFER = 2048;
-const int MAX_RECV_BUFFER = 2048;
+const int MAX_SEND_BUF = 2048;
+const int MAX_RECV_BUF = 2048;
 const int MAX_SERVERS = 100;
 const int MAX_NAME = 100;
 

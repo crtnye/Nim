@@ -1,6 +1,6 @@
 // server_main.cpp
 //   This function serves as the "main" function for the server-side
-#include "TicTacToe.h"
+#include "nim.h"
 #include <iostream>
 #include <string>
 #include <WinSock2.h>

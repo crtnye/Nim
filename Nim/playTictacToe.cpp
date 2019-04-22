@@ -2,7 +2,7 @@
 // This set of functions are used to actually play the game.
 // Play starts with the function: playTicTacToe() which is defined below
 
-#include "TicTacToe.h"
+#include "nim.h"
 #include <WinSock2.h>
 #include <iostream>
 #include <string>
