@@ -148,7 +148,7 @@
     <ClCompile Include="getMyIpAddress.cpp" />
     <ClCompile Include="getServers.cpp" />
     <ClCompile Include="passivesock.cpp" />
-    <ClCompile Include="playTictacToe.cpp" />
+    <ClCompile Include="playNim.cpp" />
     <ClCompile Include="serverMain.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
     <ClCompile Include="timestamp.cpp" />

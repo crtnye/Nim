@@ -23,7 +23,7 @@ int clientMain(int argc, char *argv[], std::string playerName)
 		std::cerr << "No interface found that supports broadcasting." << std::endl;
 		return -1;
 	}
-	int numServers = getServers(s, broadcastAddress, TicTacToe_UDPPORT, serverArray);
+	int numServers = getServers(s, broadcastAddress, NIM_UDPPORT, serverArray);
 
 	if (numServers == 0) {
 		std::cout << std::endl << "Sorry.  No TicTacToe servers were found.  Try again later." << std::endl << std::endl;
