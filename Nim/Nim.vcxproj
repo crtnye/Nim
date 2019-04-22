@@ -139,6 +139,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\tictactoe\tictactoe\clientMain.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\connectsock.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\getIPAddressInfo.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\getMyIpAddress.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\getServers.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\passivesock.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\playTictacToe.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\serverMain.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\TicTacToe.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\timestamp.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\UDP_recv.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\UDP_send.cpp" />
+    <ClCompile Include="..\..\tictactoe\tictactoe\wait.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="nim.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
