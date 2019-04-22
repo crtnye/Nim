@@ -139,22 +139,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tictactoe\tictactoe\clientMain.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\connectsock.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\getIPAddressInfo.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\getMyIpAddress.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\getServers.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\passivesock.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\playTictacToe.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\serverMain.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\TicTacToe.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\timestamp.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\UDP_recv.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\UDP_send.cpp" />
-    <ClCompile Include="..\..\tictactoe\tictactoe\wait.cpp" />
+    <ClInclude Include="nim.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="nim.h" />
+    <ClCompile Include="clientMain.cpp" />
+    <ClCompile Include="connectsock.cpp" />
+    <ClCompile Include="getIPAddressInfo.cpp" />
+    <ClCompile Include="getMyIpAddress.cpp" />
+    <ClCompile Include="getServers.cpp" />
+    <ClCompile Include="passivesock.cpp" />
+    <ClCompile Include="playTictacToe.cpp" />
+    <ClCompile Include="serverMain.cpp" />
+    <ClCompile Include="TicTacToe.cpp" />
+    <ClCompile Include="timestamp.cpp" />
+    <ClCompile Include="UDP_recv.cpp" />
+    <ClCompile Include="UDP_send.cpp" />
+    <ClCompile Include="wait.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
