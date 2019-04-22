@@ -150,7 +150,7 @@
     <ClCompile Include="passivesock.cpp" />
     <ClCompile Include="playNim.cpp" />
     <ClCompile Include="serverMain.cpp" />
-    <ClCompile Include="TicTacToe.cpp" />
+    <ClCompile Include="Nim.cpp" />
     <ClCompile Include="timestamp.cpp" />
     <ClCompile Include="UDP_recv.cpp" />
     <ClCompile Include="UDP_send.cpp" />
