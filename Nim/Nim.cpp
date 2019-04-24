@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
 	do {
 		std::cout << std::endl << std::endl << std::endl;
 		std::cout << "Choose an option:" << std::endl;
-		std::cout << "   1 - Host a game of Tic-Tac-Toe" << std::endl;
+		std::cout << "   1 - Host a game of NIM" << std::endl;
 		std::cout << "   2 - Challenge someone else" << std::endl;
 		std::cout << "   3 - Quit" << std::endl;
 		std::cout << "Enter 1, 2 or 3: ";

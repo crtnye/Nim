@@ -21,20 +21,17 @@
 
 int getServers(SOCKET s, const char *broadcastAddress, const char *broadcastPort, ServerStruct serverArray[])
 {
-	// This function returns the number of TicTacToe servers that may be found within the current Broadcast Domain.
+	// This function returns the number of NIM servers that may be found within the current Broadcast Domain.
 	// The last parameter, serverArray[], will contain all of the servers' names, IP addresses and port numbers.
 
 	int numServers = 0;
 
-	// Send TicTacToe_QUERY to broadcastAddress using broadcastPort
-/****			
-Task 3: Add code here that will send the TicTacToe_QUERY message to the broadcastAddress using the broadcastPort (see function header).
-****/
+	// Send a broadcase datagram, NIM_QUERY, to broadcastAddress using broadcastPost
 	char* TicTacToe_QUERY_Mutable = (char*)NIM_QUERY;
 	int numBytesSent = UDP_send(s, TicTacToe_QUERY_Mutable, strlen(NIM_QUERY), broadcastAddress, broadcastPort);
 
 	// Receive incoming UDP datagrams (with a maximum of 2 second wait before each UDP_recv() function call
-	// As you read datagrams, if they start with the prefix: TicTacToe_NAME, parse out the server's name
+	// As you read datagrams, if they start with the prefix: NIM_NAME, parse out the server's name
 	// and add the name, host address and port number to serverArray[].  Don't forget to increment numServers.
 	int status = wait(s,2,0);
 	if (status > 0) {
@@ -77,4 +74,3 @@ Task 4b: Inside this while loop, parse the response, which should be a C-string 
 		}
 	}
 	return numServers;
-}

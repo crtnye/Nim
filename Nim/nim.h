@@ -32,5 +32,5 @@ int wait(SOCKET, int, int);
 char* timestamp();
 int getServers(SOCKET, char*, char*, ServerStruct[]);
 int serverMain(int, char*);
-int clientMain(int, char*);
+int clientMain(int, char*, std::string);
 int getIPAddressInfo(char*, char*);
