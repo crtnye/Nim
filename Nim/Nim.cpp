@@ -35,8 +35,8 @@ int main (int argc, char *argv[])
 		choice = atoi(choiceStr);
 
 		switch (choice) {
-		case 1:	serverMain(argc,argv,playerName); break;	// Call the server main function
-		case 2: clientMain(argc,argv,playerName); break;	// Call the client main function
+		case 1:	serverMain(argc,*argv,playerName); break;	// Call the server main function
+		case 2: clientMain(argc,*argv,playerName); break;	// Call the client main function
 		case QUIT: break;
 		default: std::cout << std::endl << "Please enter a digit between 1 and 3." << std::endl;
 		}

@@ -34,10 +34,21 @@ int serverMain(int argc, char *argv[], std::string playerName)
 			if (startOfName != NULL) {
 				std::cout << std::endl << "You have been challenged by " << startOfName+strlen(NIM_CHALLENGE) << std::endl;
 			}
-			
-			// Play the game.  You are the 'O' player
-			int winner = playNim(s, (char*) playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), O_PLAYER);
-			finished = true;
+			std::cout << "Would you like to accept the challenge? " << std::endl;
+			char reply;
+			std::cin >> reply;
+
+			if (reply == 'y' || reply == 'Y') {
+				int bytesSent = UDP_send(s, "YES", 5, (char*)host.c_str(), (char*)port.c_str());
+			int status = wait(s, 2, 0);
+			int len = UDP_recv(s, buffer, MAX_RECV_BUF, (char*)host.c_str(), (char*)port.c_str());
+			if (status > 0 && strcmp(buffer, "GREAT!") == 0) {
+				// Play the game.  You are the 'O' player
+				int winner = playNim(s, (char*)playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), PSERVER);
+				finished = true;
+			}
+		
+		
 		}
 
 		if (!finished) {

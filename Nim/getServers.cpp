@@ -33,20 +33,20 @@ int getServers(SOCKET s, const char *broadcastAddress, const char *broadcastPort
 	// Receive incoming UDP datagrams (with a maximum of 2 second wait before each UDP_recv() function call
 	// As you read datagrams, if they start with the prefix: NIM_NAME, parse out the server's name
 	// and add the name, host address and port number to serverArray[].  Don't forget to increment numServers.
-	int status = wait(s,2,0);
+	int status = wait(s, 2, 0);
 	if (status > 0) {
 		int numBytesRecvd = 0;
 		char recvBuffer[MAX_RECV_BUF + 1];
 		char host[v4AddressSize];
 		char port[portNumberSize];
-/****			
-Task 4a: Add code here that will receive a response to our broadcast message
-****/		
+		/****
+		Task 4a: Add code here that will receive a response to our broadcast message
+		****/
 		numBytesRecvd = UDP_recv(s, recvBuffer, strlen(recvBuffer), host, port);
 
-		while (status > 0 && numBytesRecvd > 0 && strcmp(host,broadcastAddress) != 0) {
+		while (status > 0 && numBytesRecvd > 0 && strcmp(host, broadcastAddress) != 0) {
 			// Ignore responses that were sent via the broadcastAddress.  We need their specific IP Address
-/****			
+/****
 Task 4b: Inside this while loop, parse the response, which should be a C-string that looks like "Name=some server's name".
 		 If the response doesn't begin with the characters, "Name=", ignore it.
 		 If it does begin with the characters, "Name=", parse the actual name that follows and
@@ -68,9 +68,10 @@ Task 4b: Inside this while loop, parse the response, which should be a C-string 
 			}
 
 			// Now, we'll see if there is another response.
-			status = wait(s,2,0);
+			status = wait(s, 2, 0);
 			if (status > 0)
 				int len = UDP_recv(s, recvBuffer, MAX_RECV_BUF, host, port);
 		}
 	}
 	return numServers;
+}

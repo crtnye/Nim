@@ -85,7 +85,7 @@ int clientMain(int argc, char *argv[], std::string playerName)
 
 					opponentSelected = true;
 					// Play the game.  You are the 'X' player
-					int winner = playNim(s, serverName, host, port, X_PLAYER);
+					int winner = playNim(s, serverName, host, port, PCLIENT);
 				}
 				else {
 					//The answer is either "NO", invalid input, or the timer timed out.

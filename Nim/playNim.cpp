@@ -9,115 +9,46 @@
 
 void initializeBoard( char board[10] )
 {
-	char initBoard[10] = {'0','1','2','3','4','5','6','7','8','9'};
-	for (int i=0; i<10; i++)
-		board[i] = initBoard[i];
+	
 }
 
 void updateBoard( char board[10], int move, int Player)
 {
-	std::cout << Player << std::endl;
-	if (Player == X_PLAYER) {
-		board[move] = 'X';
-	} else if (Player == O_PLAYER) {
-		board[move] = 'O';
-	} else
-		std::cout << "Problem with updateBoard function!" << std::endl;
+
 }
 
 void displayBoard( char board[10] )
 {
-	std::cout << std::endl;
-	std::cout << board[7] << " | " << board[8] << " | " << board[9] << std::endl;
-	std::cout << "__+___+__" << std::endl;
-	std::cout << board[4] << " | " << board[5] << " | " << board[6] << std::endl;
-	std::cout << "__+___+__" << std::endl;
-	std::cout << board[1] << " | " << board[2] << " | " << board[3] << std::endl;
-	std::cout << std::endl;
+
 }
 
 int check4Win(char board[10])
 {
-	int winner = noWinner;
-
-	// Check for vertical winners
-	int i = 1;
-	while (winner == noWinner && i < 4) {
-		if (board[i] == board[i+3] && board[i] == board[i+6]) {
-			winner = (board[i] == 'X') ? xWinner : oWinner;
-		}
-		i++;
-	}
-
-	// Check for horizontal winners
-	i = 1;
-	while (winner == noWinner && i < 8) {
-		if (board[i] == board[i+1] && board[i] == board[i+2]) {
-			winner = (board[i] == 'X') ? xWinner : oWinner;
-		}
-		i  += 3;
-	}
-
-	// Check for diagonal winners
-	if (winner == noWinner) {
-		if ( (board[1] == board[5] && board[1] == board[9]) ||
-			 (board[3] == board[5] && board[3] == board[7]) ) {
-			winner = (board[5] == 'X') ? xWinner : oWinner;
-		}
-	}
-
-	// Check for tie
-	i = 1;
-	int numMoves = 0;
-	while ( i < 10) {
-		if ( (board[i] == 'X' || board[i] == 'O') ) {
-			numMoves++;
-		}
-		i++;
-	}
-	if (winner == noWinner && numMoves == 9)
-		winner = TIE;
-	
-
-	return winner;
+	return 1;
 }
 
 int getMove(char board[10], int Player)
 {
-	int move;
-	char move_str[80];
-
-	std::cout << "Where do you want to place your ";
-	char mark = (Player == X_PLAYER) ? 'X' : 'O';
-	std::cout << mark << "? " << std::endl;
-
-	do {
-		std::cout << "Your move? ";
-		std::cin  >> move_str;
-		move = atoi(move_str);
-		if (board[move] == 'X' || board[move] == 'O') move = 0;
-	} while (move < 1 || move > 9);
-
-	return move;
+	return 1;
 }
 
 int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string remotePort, int localPlayer)
 {
 	// This function plays the game and returns the value: winner.  This value 
-	// will be one of the following values: noWinner, xWinner, oWinner, TIE, ABORT
+	// will be one of the following values: noWinner, CWinner, PWinner, TIE, ABORT
 	int winner = noWinner;
 	char board[10];
 	int opponent;
 	int move;
 	bool myMove;
 
-	if (localPlayer == X_PLAYER) {
+	if (localPlayer == PCLIENT) {
 		std::cout << "Playing as X" << std::endl;
-		opponent = O_PLAYER;
+		opponent = PSERVER;
 		myMove = true;
 	} else {
 		std::cout << "Playing as O" << std::endl;
-		opponent = X_PLAYER;
+		opponent = PCLIENT;
 		myMove = false;
 	}
 
@@ -175,12 +106,7 @@ Task 2: (i) Insert code inside this IF statement that will accept a null-termina
 			winner = check4Win(board);
 		}
 		
-		if (winner == localPlayer)
-			std::cout << "You WIN!" << std::endl;
-		else if (winner == TIE)
-			std::cout << "It's a tie." << std::endl;
-		else if (winner == opponent)
-			std::cout << "I'm sorry.  You lost" << std::endl;
+
 	}
 
 	return winner;
