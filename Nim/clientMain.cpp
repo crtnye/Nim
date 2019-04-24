@@ -14,8 +14,8 @@ int clientMain(int argc, char *argv[], std::string playerName)
 	//Create a client socket
 	SOCKET s = connectsock("", "", "udp");
 
-	// Find all TicTacToe servers on our subnet
-	//std::cout << std::endl << "Looking for TicTacToe servers ... " << std::endl;
+	// Find all Nim servers on our subnet
+	//std::cout << std::endl << "Looking for Nim servers ... " << std::endl;
 
 	char broadcastAddress[v4AddressSize];
 	char myIPAddress[v4AddressSize];
@@ -85,7 +85,7 @@ int clientMain(int argc, char *argv[], std::string playerName)
 
 					opponentSelected = true;
 					// Play the game.  You are the 'X' player
-					int winner = playTicTacToe(s, serverName, host, port, X_PLAYER);
+					int winner = playNim(s, serverName, host, port, X_PLAYER);
 				}
 				else {
 					//The answer is either "NO", invalid input, or the timer timed out.

@@ -13,7 +13,7 @@ int serverMain(int argc, char *argv[], std::string playerName)
 	std::string port;
 	char responseStr[MAX_SEND_BUF];
 	
-	s = passivesock(TicTacToe_UDPPORT,"udp");
+	s = passivesock(NIM_UDPPORT,"udp");
 
 	std::cout << std::endl << "Waiting for a challenge..." << std::endl;
 	int len = UDP_recv(s, buffer, MAX_RECV_BUF, (char*)host.c_str() , (char*)port.c_str());
@@ -21,22 +21,22 @@ int serverMain(int argc, char *argv[], std::string playerName)
 
 	bool finished = false;
 	while (!finished) {
-		if ( strcmp(buffer,TicTacToe_QUERY) == 0) {
+		if ( strcmp(buffer,NIM_QUERY) == 0) {
 			// Respond to name query
-			strcpy_s(responseStr,TicTacToe_NAME);
+			strcpy_s(responseStr,NIM_NAME);
 			strcat_s(responseStr,playerName.c_str());
 			UDP_send(s, responseStr, strlen(responseStr)+1, (char*)host.c_str(), (char*)port.c_str());
 			std::cout << timestamp() << " - Sending: " << responseStr << std::endl;
 
-		} else if ( strncmp(buffer,TicTacToe_CHALLENGE,strlen(TicTacToe_CHALLENGE)) == 0) {
+		} else if ( strncmp(buffer,NIM_CHALLENGE,strlen(NIM_CHALLENGE)) == 0) {
 			// Received a challenge  
-			char *startOfName = strstr(buffer,TicTacToe_CHALLENGE);
+			char *startOfName = strstr(buffer,NIM_CHALLENGE);
 			if (startOfName != NULL) {
-				std::cout << std::endl << "You have been challenged by " << startOfName+strlen(TicTacToe_CHALLENGE) << std::endl;
+				std::cout << std::endl << "You have been challenged by " << startOfName+strlen(NIM_CHALLENGE) << std::endl;
 			}
 			
 			// Play the game.  You are the 'O' player
-			int winner = playTicTacToe(s, (char*) playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), O_PLAYER);
+			int winner = playNim(s, (char*) playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), O_PLAYER);
 			finished = true;
 		}
 

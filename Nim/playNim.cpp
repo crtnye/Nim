@@ -1,6 +1,6 @@
-// playTicTacToe.cpp
+// playNim.cpp
 // This set of functions are used to actually play the game.
-// Play starts with the function: playTicTacToe() which is defined below
+// Play starts with the function: playNim() which is defined below
 
 #include "nim.h"
 #include <WinSock2.h>
@@ -101,7 +101,7 @@ int getMove(char board[10], int Player)
 	return move;
 }
 
-int playTicTacToe(SOCKET s, std::string serverName, std::string remoteIP, std::string remotePort, int localPlayer)
+int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string remotePort, int localPlayer)
 {
 	// This function plays the game and returns the value: winner.  This value 
 	// will be one of the following values: noWinner, xWinner, oWinner, TIE, ABORT
