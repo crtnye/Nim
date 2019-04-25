@@ -12,7 +12,6 @@ static char NIM_UDPPORT[] = "29333";
 
 const int v4AddressSize = 16;
 const int portNumberSize = 10;
-const int noWinner = 0;
 const int WAIT_TIME = 120;
 const int MAX_SEND_BUF = 2048;
 const int MAX_RECV_BUF = 2048;
@@ -21,6 +20,7 @@ const int MAX_NAME = 100;
 const int ABORT = -1;
 const int PCLIENT = 1;
 const int PSERVER = 2;
+const int noWinner = 0;
 const int CWinner = 1;
 const int PWinner = 2;
 

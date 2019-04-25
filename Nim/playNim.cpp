@@ -7,92 +7,109 @@
 #include <iostream>
 #include <string>
 
-void initializeBoard( char board[10] )
+//Returns the initial pile configuration 
+std::string initializeBoard(int piles[])
 {
-	
+	//TODO:
+	//Initialize the game board
+	//Calculate a random number of piles between 3 and 9 inclusive
+	//Calculate a random number of rocks between 1 and 20 inclusive for each pile
+	//Populate piles[] with the data as it is generated
+	//Build the return string
+
+	std::string temp;
+	return temp;
 }
 
-void updateBoard( char board[10], int move, int Player)
+void updateBoard(int piles[], std::string move, int Player)
 {
-
+	//TODO: Update the piles array to reflect the move
 }
 
-void displayBoard( char board[10] )
+void displayBoard(int piles[])
 {
-
+	//TODO: Display the game board
 }
 
-int check4Win(char board[10])
+int check4Win(int piles[])
 {
-	return 1;
+	//TODO: Check to see if the game is over
+	//Notify the player if the game is over and who won.
+	return 0;
 }
 
-int getMove(char board[10], int Player)
+std::string getMove(const int piles[], int Player)
 {
-	return 1;
+	//TODO:
+	//Ask the player for their move
+	//Ask for pile, then number of rocks to remove (make sure both are valid input)
+	//return the move as a string
+	std::string temp = "";
+	return temp;
 }
 
 int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string remotePort, int localPlayer)
 {
 	// This function plays the game and returns the value: winner.  This value 
-	// will be one of the following values: noWinner, CWinner, PWinner, TIE, ABORT
+	// will be one of the following values: noWinner, CWinner, PWinner, ABORT
 	int winner = noWinner;
-	char board[10];
+	std::string initialBoardConfig; //Contains the initial mnnnnnnnn format
+	int piles[9]; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
-	int move;
+	std::string move;
 	bool myMove;
 
 	if (localPlayer == PCLIENT) {
-		std::cout << "Playing as X" << std::endl;
 		opponent = PSERVER;
 		myMove = true;
 	} else {
-		std::cout << "Playing as O" << std::endl;
 		opponent = PCLIENT;
 		myMove = false;
+		initialBoardConfig = initializeBoard(piles);
+
+		//TODO: Send intialBoardConfig to the server using UDP_send
 	}
 
-	initializeBoard(board);
-	displayBoard(board);
+	displayBoard(piles);
 
 	while (winner == noWinner) {
 		if (myMove) {
 			// Get my move & display board
-			move = getMove(board, localPlayer);
+			move = getMove(piles, localPlayer);
+			//TODO: Some checks on the move the player wants to make
+			//Did the player forfeit?
+			//Is the player just sending a comment?
+			//Is the move they sent invalid?
+
 			std::cout << "Board after your move:" << std::endl;
 
-			updateBoard(board,move,localPlayer);
-			displayBoard(board);
+			updateBoard(piles,move,localPlayer);
+			displayBoard(piles);
 
 			// Send move to opponent
-/****			
-	Task 1: "move" is an integer that was assigned a value (from 1 to 9) in the previous code segment.
-	         Add code here to convert "move" to a null-terminated C-string and send it to your opponent at remoteIP using remotePort.
-****/	
-			char _move[2];
-			_itoa_s(move, _move, 10);
+			const char *_move = move.c_str();
 			int numBytesSent = UDP_send(s, _move, strlen(_move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
 		} else {
 			std::cout << "Waiting for your opponent's move..." << std::endl << std::endl;
+
 			//Get opponent's move & display board
 			int status = wait(s,WAIT_TIME,0);
 			if (status > 0) {
-/****			
-Task 2: (i) Insert code inside this IF statement that will accept a null-terminated C-string from your
-		opponent that represents their move.  Convert that string to an integer and then
-		(ii) call a function that will update the game board (see above) using your opponent's move, and
-		(iii) call a function that will display the updated board on your screen.
-****/			
+
 				char moveStr[MAX_RECV_BUF];
 				char remoteHost[v4AddressSize];
 				char remotePort[v4AddressSize];
 				int numBytesRecvd = UDP_recv(s, moveStr, MAX_RECV_BUF, remoteHost, remotePort);
 
-				int move = atoi(moveStr);
+				std::string move = moveStr;
+				//TODO: Some checks on the move recieved (probably a function)
+				//Did they forfeit?
+				//Are they just sending a comment?
+				//Is the move they sent invalid?
 
-				updateBoard(board, move, opponent);
-				displayBoard(board);
+				updateBoard(piles, move, opponent);
+				displayBoard(piles);
 
 			} else {
 				winner = ABORT;
@@ -103,11 +120,9 @@ Task 2: (i) Insert code inside this IF statement that will accept a null-termina
 		if (winner == ABORT) {
 			std::cout << timestamp() << " - No response from opponent.  Aborting the game..." << std::endl;
 		} else {
-			winner = check4Win(board);
+			winner = check4Win(piles);
 		}
-		
 
 	}
-
 	return winner;
 }
