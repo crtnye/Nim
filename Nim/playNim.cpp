@@ -87,8 +87,11 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 			displayBoard(piles);
 
 			// Send move to opponent
-			const char *_move = move.c_str();
-			int numBytesSent = UDP_send(s, _move, strlen(_move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
+
+			char mutableMove[4];
+			strcpy(mutableMove, move.c_str());
+
+			int numBytesSent = UDP_send(s, mutableMove, strlen(mutableMove) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
 		} else {
 			std::cout << "Waiting for your opponent's move..." << std::endl << std::endl;

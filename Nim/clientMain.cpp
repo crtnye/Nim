@@ -5,7 +5,8 @@
 #include <string>
 #include <WinSock2.h>
 
-int clientMain(int argc, char *argv[], std::string playerName)
+//int clientMain(int argc, char *argv[], std::string playerName)
+int clientMain(int argc, char *argv, std::string playerName)
 {
 	std::string host;
 	std::string port;

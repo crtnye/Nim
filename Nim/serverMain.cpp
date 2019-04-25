@@ -5,7 +5,8 @@
 #include <string>
 #include <WinSock2.h>
 
-int serverMain(int argc, char *argv[], std::string playerName)
+//int serverMain(int argc, char *argv[], std::string playerName)
+int serverMain(int argc, char argv[], std::string playerName)
 {
 	SOCKET s;
 	char buffer[MAX_RECV_BUF];

@@ -5,7 +5,7 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
-int UDP_send(SOCKET s, char *buf, int numBytesToSend, const char *host, const char *service)
+int UDP_send(SOCKET s, char *buf, int numBytesToSend, char *host, char *service)
 {	// Parameter List:
 	// [IN] s      : SOCKET handle
 	// [IN] buf    : Address of NULL-terminated char array containing bytes to be sent to host

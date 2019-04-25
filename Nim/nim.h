@@ -34,7 +34,7 @@ int playNim(SOCKET, string, string, string, int);
 SOCKET connectsock(const char*, const char*, const char*);
 SOCKET passivesock(const char*, const char*);
 int UDP_recv(SOCKET, char*, int, char*, char*);
-int UDP_send(SOCKET, const char*, int, const char*, const char*);
+int UDP_send(SOCKET, char*, int, char*, char*);
 int wait(SOCKET, int, int);
 char* timestamp();
 int getServers(SOCKET, char*, char*, ServerStruct[]);

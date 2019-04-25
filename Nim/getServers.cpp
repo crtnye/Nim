@@ -19,7 +19,7 @@
 
 //	Function return value	= Number of remote TicTacToe servers (size of serverArray[])
 
-int getServers(SOCKET s, const char *broadcastAddress, const char *broadcastPort, ServerStruct serverArray[])
+int getServers(SOCKET s, char *broadcastAddress, char *broadcastPort, ServerStruct serverArray[])
 {
 	// This function returns the number of NIM servers that may be found within the current Broadcast Domain.
 	// The last parameter, serverArray[], will contain all of the servers' names, IP addresses and port numbers.
