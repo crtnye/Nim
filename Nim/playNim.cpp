@@ -17,6 +17,8 @@ std::string initializeBoard(int piles[])
 	//Populate piles[] with the data as it is generated
 	//Build the return string
 
+
+
 	std::string temp;
 	return temp;
 }
@@ -110,6 +112,8 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 				//Did they forfeit?
 				//Are they just sending a comment?
 				//Is the move they sent invalid?
+
+
 
 				updateBoard(piles, move, opponent);
 				displayBoard(piles);
