@@ -73,16 +73,20 @@ int check4Win(Piles &piles)
 	return 0;
 }
 
-string getMove(const Piles &piles, int Player)
+char* getMove(Piles &piles, int Player)
 {
 	//TODO:
 	//Ask the player for their move
 	//Ask for pile, then number of rocks to remove (make sure both are valid input)
 	//return the move as a string
 
+	char command[36];
+	cout << "It's your turn!" << endl;
+	cout << "Enter first letter of one of the following commands (C,F, or R)."
+		<< "Command(Chat, Forfeit, Remove - rocks) ? ";
+	cin >> command;
 
-	string temp = "";
-	return temp;
+	return command;
 }
 
 int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int localPlayer)
@@ -116,10 +120,39 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		if (myMove) {
 			// Get my move & display board
 			move = getMove(piles, localPlayer);
-			//TODO: Some checks on the move the player wants to make
-			//Did the player forfeit?
-			//Is the player just sending a comment?
-			//Is the move they sent invalid?
+
+			char message[MAX_SEND_BUF];
+
+			if (move[0] == 'C') {
+				char comment[80];
+				comment[0] = 'C';
+				char input[79];
+				cout << endl << "Comment?";
+				cin >> input;
+				strcat(comment, input);
+				strcpy(message, comment);
+			}
+			else if (move[0] == 'F') {
+
+				cout << endl << "You forfeited, " << opponent << " won." << endl;
+				strcpy(message, (char*)'F');
+			}
+			else if (move[0] == 'R') {
+				int pile;
+				int numRocks;
+				cout << "Which pile? ";
+				cin >> pile;
+				cout << endl << "How many rocks?";
+				cin >> numRocks;
+
+				//was the move valid? if so...
+				strcpy(message, (char*)pile);
+				strcat(message, (char*)numRocks);
+			}
+			else {
+				//not sure what goes here
+			}
+
 
 			cout << "Board after your move:" << endl;
 
