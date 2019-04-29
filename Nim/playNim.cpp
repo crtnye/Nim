@@ -4,7 +4,10 @@
 
 #include "nim.h"
 #include <WinSock2.h>
+#include <iomanip>
+#include <array>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 //Returns the initial pile configuration 
@@ -40,11 +43,29 @@ std::string initializeBoard(int piles[])
 void updateBoard(int piles[], std::string move, int Player)
 {
 	//TODO: Update the piles array to reflect the move
+	istringstream iss(move.substr(0,1));
+	int p;
+	iss >> p;
+
+	int r;
+	istringstream iss(move.substr(1, 2));
+	iss >> r;
+
+	piles[p] -= r;
+
 }
 
 void displayBoard(int piles[])
 {
 	//TODO: Display the game board
+	for (int i = 0; i < sizeof(piles) / sizeof(int); i++) {
+		std::cout << "PILE " << i << ": ";
+		for (int f = 0; f < piles[i]; i++) {
+			std::cout << "*";
+		}
+		
+		std::cout << std::right << setw(12) << "PILE " << i << ": " << piles[i] << endl;
+	}
 }
 
 int check4Win(int piles[])
