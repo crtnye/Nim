@@ -14,12 +14,7 @@ using namespace std;
 //Returns the initial pile configuration 
 string initializeBoard(int piles[])
 {
-<<<<<<< HEAD
-	
-	srand(2);
-=======
 	srand(time(0));
->>>>>>> parent of 2b34351... Merge branch 'master' of https://github.com/crtnye/Nim
 	int maxPiles = rand() % 9 + 3;
 	char t[3];
 	itoa(maxPiles, t, 10);

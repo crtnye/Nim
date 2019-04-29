@@ -30,15 +30,13 @@ struct ServerStruct {
 	string port;
 };
 
-<<<<<<< HEAD
+
 struct Piles {
 	int pile[9];
 	char board[255] = { "" };
 	int numPiles;
 };
 
-=======
->>>>>>> parent of 2b34351... Merge branch 'master' of https://github.com/crtnye/Nim
 int playNim(SOCKET, string, string, string, int);
 SOCKET connectsock(const char*, const char*, const char*);
 SOCKET passivesock(const char*, const char*);
