@@ -16,10 +16,24 @@ std::string initializeBoard(int piles[])
 	//Calculate a random number of rocks between 1 and 20 inclusive for each pile
 	//Populate piles[] with the data as it is generated
 	//Build the return string
-
-
-
+	int maxPiles = rand() % 9 + 3;
+	char* t;
+	itoa(maxPiles, t, 10);
 	std::string temp;
+	temp.append(t);
+
+	for (int i = 0; i < maxPiles; i++) {
+		piles[i] = rand() % 20 + 1;
+		itoa(piles[i], t, 10);
+		if (piles[i] < 10) {
+			temp.append("0");
+			temp.append(t);
+		}
+		else {
+			temp.append(t);
+		}
+	}
+	
 	return temp;
 }
 
