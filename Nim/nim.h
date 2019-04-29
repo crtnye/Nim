@@ -38,6 +38,6 @@ int UDP_send(SOCKET, char*, int, char*, char*);
 int wait(SOCKET, int, int);
 char* timestamp();
 int getServers(SOCKET, char*, char*, ServerStruct[]);
-int serverMain(int, char[], string);
+int serverMain(int, char argv[], string);
 int clientMain(int, char*, string);
 int getIPAddressInfo(char*, char*);

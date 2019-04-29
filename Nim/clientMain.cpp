@@ -27,7 +27,10 @@ int clientMain(int argc, char *argv, std::string playerName)
 		return -1;
 	}
 	int numServers = getServers(s, broadcastAddress, NIM_UDPPORT, serverArray);
-
+	wait(s, 3, 0);
+	if (numServers < 2) {
+		numServers = getServers(s, broadcastAddress, NIM_UDPPORT, serverArray);
+	}
 	if (numServers == 0) {
 		std::cout << std::endl << "Sorry.  No NIM servers were found.  Try again later." << std::endl << std::endl;
 	} 
@@ -64,7 +67,10 @@ int clientMain(int argc, char *argv, std::string playerName)
 				std::cout << "Who would you like to challenge (1-" << numServers+1 << ")? ";
 				std::getline(std::cin,answerStr);
 				answer = atoi(answerStr.c_str());
-				if (answer > numServers) answer = 0;
+				if (answer > numServers) {
+					answer = 0;
+					opponentSelected = true;
+				}
 			}
 			
 			if (answer >= 1 && answer <= numServers) {
