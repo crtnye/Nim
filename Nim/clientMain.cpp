@@ -53,7 +53,13 @@ int clientMain(int argc, char *argv, std::string playerName)
 			if (numServers == 1) {
 				std::cout << "Do you want to challenge " << serverArray[0].name << "? ";
 				std::getline(std::cin, answerStr);
-				if (answerStr[0] == 'y' || answerStr[0] == 'Y') answer = 1;
+				if (answerStr[0] == 'y' || answerStr[0] == 'Y') {
+					answer = 1; 
+				}
+				else {
+					answer = 0;
+					opponentSelected = true;
+				}
 			} else if (numServers > 1) {
 				std::cout << "Who would you like to challenge (1-" << numServers+1 << ")? ";
 				std::getline(std::cin,answerStr);
