@@ -30,6 +30,12 @@ struct ServerStruct {
 	string port;
 };
 
+struct Piles {
+	int pile[9];
+	char board[255];
+	int numPiles;
+};
+
 int playNim(SOCKET, string, string, string, int);
 SOCKET connectsock(const char*, const char*, const char*);
 SOCKET passivesock(const char*, const char*);
