@@ -14,6 +14,7 @@ using namespace std;
 //Returns the initial pile configuration 
 char * initializeBoard(Piles &piles)
 {
+	
 	srand(2);
 	int maxPiles = rand() % 9 + 3;
 	piles.numPiles = maxPiles;
