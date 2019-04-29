@@ -75,18 +75,63 @@ int check4Win(Piles &piles)
 
 char* getMove(Piles &piles, int Player)
 {
-	//TODO:
-	//Ask the player for their move
-	//Ask for pile, then number of rocks to remove (make sure both are valid input)
-	//return the move as a string
+	char message[MAX_SEND_BUF];
 
-	char command[36];
 	cout << "It's your turn!" << endl;
-	cout << "Enter first letter of one of the following commands (C,F, or R)."
-		<< "Command(Chat, Forfeit, Remove - rocks) ? ";
-	cin >> command;
+	bool validCommand = false;
 
-	return command;
+	while (!validCommand) {
+		char command[36];
+
+		cout << "Enter first letter of one of the following commands (C,F, or R)."
+			<< "Command(Chat, Forfeit, Remove - rocks) ? ";
+		cin >> command;
+
+
+		if (command[0] == 'C') {
+			validCommand = true;
+			char comment[80];
+			comment[0] = 'C';
+			char input[79];
+			cout << endl << "Comment?";
+			cin >> input;
+			strcat(comment, input);
+			strcpy(message, comment);
+		}
+		else if (command[0] == 'F') {
+			validCommand = true;
+			cout << endl << "You forfeited, you lose." << endl;
+			strcpy(message, (char*)'F');
+		}
+		else if (command[0] == 'R') {
+			validCommand = true;
+			int selectedPile;
+			int numRocks;
+			cout << "Which pile? ";
+			cin >> selectedPile;
+			cout << endl << "How many rocks?";
+			cin >> numRocks;
+
+			while (selectedPile < 1 || selectedPile > piles.numPiles || piles.pile[selectedPile] - numRocks < 0) {
+				cout << "I'm sorry, you selected an invalid move. Please try again." << endl;
+
+				cout << "Which pile? ";
+				cin >> selectedPile;
+				cout << endl << "How many rocks?";
+				cin >> numRocks;
+			}
+			//put the move into message
+			strcpy(message, (char*)selectedPile);
+			if (numRocks < 10) {
+				strcat(message, "0");
+			}
+			strcat(message, (char*)numRocks);
+		}
+		else {
+			cout << "Invalid command." << endl;
+		}
+	}
+	return message;
 }
 
 int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int localPlayer)
@@ -97,7 +142,6 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	string initialBoardConfig; //Contains the initial mnnnnnnnn format
 	Piles piles; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
-	string move;
 	bool myMove;
 
 	if (localPlayer == PCLIENT) {
@@ -108,10 +152,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		myMove = false;
 		initialBoardConfig = initializeBoard(piles);
 
-
-		//TODO: Send intialBoardConfig to the server using UDP_send
-
-
+		int numBytesSent = UDP_send(s, piles.board, strlen(piles.board) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 	}
 
 	displayBoard(piles);
@@ -119,52 +160,23 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	while (winner == noWinner) {
 		if (myMove) {
 			// Get my move & display board
-			move = getMove(piles, localPlayer);
+			char *move = getMove(piles, localPlayer);
 
-			char message[MAX_SEND_BUF];
+			int numBytesSent = UDP_send(s, move, strlen(move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
 			if (move[0] == 'C') {
-				char comment[80];
-				comment[0] = 'C';
-				char input[79];
-				cout << endl << "Comment?";
-				cin >> input;
-				strcat(comment, input);
-				strcpy(message, comment);
+				cout << "Your comment has been sent." << endl;
 			}
 			else if (move[0] == 'F') {
-
-				cout << endl << "You forfeited, " << opponent << " won." << endl;
-				strcpy(message, (char*)'F');
-			}
-			else if (move[0] == 'R') {
-				int pile;
-				int numRocks;
-				cout << "Which pile? ";
-				cin >> pile;
-				cout << endl << "How many rocks?";
-				cin >> numRocks;
-
-				//was the move valid? if so...
-				strcpy(message, (char*)pile);
-				strcat(message, (char*)numRocks);
+				winner = opponent;
 			}
 			else {
-				//not sure what goes here
+				cout << "Board after your move:" << endl;
+
+				updateBoard(piles, move, localPlayer);
+				displayBoard(piles);
+
 			}
-
-
-			cout << "Board after your move:" << endl;
-
-			updateBoard(piles,move,localPlayer);
-			displayBoard(piles);
-
-			// Send move to opponent
-			char mutableMove[4];
-			strcpy(mutableMove, move.c_str());
-
-			int numBytesSent = UDP_send(s, mutableMove, strlen(mutableMove) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
-
 		} else {
 			cout << "Waiting for your opponent's move..." << endl << endl;
 
