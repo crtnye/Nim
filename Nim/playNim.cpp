@@ -60,7 +60,7 @@ void updateBoard(int piles[], string move, int Player)
 void displayBoard(int piles[])
 {
 	//TODO: Display the game board
-	for (int i = 0; i < sizeof(piles); i++) {
+	for (int i = 0; i < (sizeof(piles)/sizeof(int)); i++) {
 		cout << "PILE " << i << ": ";
 		for (int f = 0; f < piles[i]; i++) {
 			cout << "*";
