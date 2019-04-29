@@ -17,18 +17,19 @@ int serverMain(int argc, char argv[], std::string playerName)
 	s = passivesock(NIM_UDPPORT, "udp");
 
 	std::cout << std::endl << "Waiting for a challenge..." << std::endl;
-	int len = UDP_recv(s, buffer, MAX_RECV_BUF, (char*)host.c_str(), (char*)port.c_str());
-	std::cout << timestamp() << " - Received: " << buffer << std::endl;
+	
 
 	bool finished = false;
 	while (!finished) {
+		int len = UDP_recv(s, buffer, MAX_RECV_BUF, (char*)host.c_str(), (char*)port.c_str());
+		std::cout << timestamp() << " - Received: " << buffer << std::endl;
 		if (strcmp(buffer, NIM_QUERY) == 0) {
 			// Respond to name query
 			strcpy_s(responseStr, NIM_NAME);
 			strcat_s(responseStr, playerName.c_str());
-			UDP_send(s, responseStr, strlen(responseStr) + 1, (char*)host.c_str(), (char*)port.c_str());
+			int bytesSent = UDP_send(s, responseStr, strlen(responseStr) + 1, (char*)host.c_str(), (char*)port.c_str());
 			std::cout << timestamp() << " - Sending: " << responseStr << std::endl;
-
+			wait(s, 10, 0);
 		}
 		else if (strncmp(buffer, NIM_CHALLENGE, strlen(NIM_CHALLENGE)) == 0) {
 			// Received a challenge  
@@ -49,7 +50,7 @@ int serverMain(int argc, char argv[], std::string playerName)
 					int winner = playNim(s, (char*)playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), PSERVER);
 					finished = true;
 				}
-
+				wait(s, 5, 0);
 
 			}
 
@@ -81,8 +82,8 @@ int serverMain(int argc, char argv[], std::string playerName)
 				}
 			}
 		}
-		closesocket(s);
 
 	}
+		closesocket(s);
 	return 0;
 }

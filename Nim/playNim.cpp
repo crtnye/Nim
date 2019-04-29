@@ -12,7 +12,7 @@
 using namespace std;
 
 //Returns the initial pile configuration 
-string initializeBoard(int piles[])
+string initializeBoard(int piles[9])
 {
 	//TODO:
 	//Initialize the game board
@@ -22,7 +22,7 @@ string initializeBoard(int piles[])
 	//Build the return string
 	srand(time(0));
 	int maxPiles = rand() % 9 + 3;
-	char t[255];
+	char t[3];
 	itoa(maxPiles, t, 10);
 	string temp;
 	temp.append(t);
@@ -60,7 +60,7 @@ void updateBoard(int piles[], string move, int Player)
 void displayBoard(int piles[])
 {
 	//TODO: Display the game board
-	for (int i = 0; i < (sizeof(piles)/sizeof(int)); i++) {
+	for (int i = 0; i < *piles; i++) {
 		cout << "PILE " << i << ": ";
 		for (int f = 0; f < piles[i]; i++) {
 			cout << "*";
