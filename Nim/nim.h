@@ -30,6 +30,7 @@ struct ServerStruct {
 	string port;
 };
 
+
 struct Piles {
 	int pile[9];
 	char board[255] = { "" };

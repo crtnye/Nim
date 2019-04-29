@@ -11,34 +11,34 @@
 #include <string>
 using namespace std;
 
-//Returns the initial pile configuration 
-char * initializeBoard(Piles &piles)
+//Returns the initial pile configuration
+string initializeBoard(int piles[])
 {
-	
-	srand(2);
+	srand(time(0));
 	int maxPiles = rand() % 9 + 3;
-	piles.numPiles = maxPiles;
 	char t[3];
 	itoa(maxPiles, t, 10);
-	strcat(piles.board, t);
+	string temp;
+	temp.append(t);
 
 	for (int i = 0; i < maxPiles; i++) {
-		piles.pile[i] = rand() % 20 + 1;
-		int x = piles.pile[i];
+		//piles[i] = rand() % 20 + 1;
+		//int x = piles[i];
+		int x = rand() % 20 + 1;
+		piles[i] = x;
 		itoa(x, t, 10);
-		if (piles.pile[i] < 10) {
-			strcat(piles.board, "0");
-			strcat(piles.board, t);
+		if (piles[i] < 10) {
+			temp.append("0");
+			temp.append(t);
 		}
 		else {
-
-			strcat(piles.board, t);
+			temp.append(t);
 		}
 	}
-	return piles.board;
+	return temp;
 }
 
-void updateBoard(Piles &piles, string move, int Player)
+void updateBoard(int piles[], string move, int Player)
 {
 	//TODO: Update the piles array to reflect the move
 	istringstream iss(move.substr(0,1));
@@ -49,24 +49,24 @@ void updateBoard(Piles &piles, string move, int Player)
 	istringstream iss2(move.substr(1, 2));
 	iss2 >> r;
 
-	piles.pile[p] -= r;
+	piles[p] -= r;
 
 }
 
-void displayBoard(Piles &piles)
+void displayBoard(int piles[])
 {
 	//TODO: Display the game board
-
-	for (int i = 0; i < piles.numPiles; i++) {
-		cout << "pile " << i + 1 << ": ";
-		for (int f = 0; f < piles.pile[i]; f++) {
+	for (int i = 0; i < *piles; i++) {
+		cout << "PILE " << i << ": ";
+		for (int f = 0; f < piles[i]; i++) {
 			cout << "*";
 		}
-		cout << right << setw(13) << "pile " << i + 1 << ": " << piles.pile[i] << endl;
+
+		cout << right << setw(12) << "PILE " << i << ": " << piles[i] << endl;
 	}
 }
 
-int check4Win(Piles &piles)
+int check4Win(int piles[])
 {
 	//TODO: Check to see if the game is over
 	//Notify the player if the game is over and who won.
@@ -91,12 +91,11 @@ char* getMove(Piles &piles, int Player)
 
 int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int localPlayer)
 {
-	// This function plays the game and returns the value: winner.  This value 
+	// This function plays the game and returns the value: winner.  This value
 	// will be one of the following values: noWinner, CWinner, PWinner, ABORT
 	int winner = noWinner;
 	string initialBoardConfig; //Contains the initial mnnnnnnnn format
-	Piles piles;
-	piles.pile; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
+	int piles[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
 	string move;
 	bool myMove;
@@ -108,6 +107,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		opponent = PCLIENT;
 		myMove = false;
 		initialBoardConfig = initializeBoard(piles);
+
 
 		//TODO: Send intialBoardConfig to the server using UDP_send
 
@@ -160,7 +160,6 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 			displayBoard(piles);
 
 			// Send move to opponent
-
 			char mutableMove[4];
 			strcpy(mutableMove, move.c_str());
 
