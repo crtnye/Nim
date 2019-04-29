@@ -9,9 +9,10 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+using namespace std;
 
 //Returns the initial pile configuration 
-std::string initializeBoard(int piles[])
+string initializeBoard(int piles[])
 {
 	//TODO:
 	//Initialize the game board
@@ -19,10 +20,11 @@ std::string initializeBoard(int piles[])
 	//Calculate a random number of rocks between 1 and 20 inclusive for each pile
 	//Populate piles[] with the data as it is generated
 	//Build the return string
+	srand(time(0));
 	int maxPiles = rand() % 9 + 3;
-	char* t;
+	char t[255];
 	itoa(maxPiles, t, 10);
-	std::string temp;
+	string temp;
 	temp.append(t);
 
 	for (int i = 0; i < maxPiles; i++) {
@@ -40,7 +42,7 @@ std::string initializeBoard(int piles[])
 	return temp;
 }
 
-void updateBoard(int piles[], std::string move, int Player)
+void updateBoard(int piles[], string move, int Player)
 {
 	//TODO: Update the piles array to reflect the move
 	istringstream iss(move.substr(0,1));
@@ -48,8 +50,8 @@ void updateBoard(int piles[], std::string move, int Player)
 	iss >> p;
 
 	int r;
-	istringstream iss(move.substr(1, 2));
-	iss >> r;
+	istringstream iss2(move.substr(1, 2));
+	iss2 >> r;
 
 	piles[p] -= r;
 
@@ -58,13 +60,13 @@ void updateBoard(int piles[], std::string move, int Player)
 void displayBoard(int piles[])
 {
 	//TODO: Display the game board
-	for (int i = 0; i < sizeof(piles) / sizeof(int); i++) {
-		std::cout << "PILE " << i << ": ";
+	for (int i = 0; i < sizeof(piles); i++) {
+		cout << "PILE " << i << ": ";
 		for (int f = 0; f < piles[i]; i++) {
-			std::cout << "*";
+			cout << "*";
 		}
 		
-		std::cout << std::right << setw(12) << "PILE " << i << ": " << piles[i] << endl;
+		cout << right << setw(12) << "PILE " << i << ": " << piles[i] << endl;
 	}
 }
 
@@ -75,25 +77,25 @@ int check4Win(int piles[])
 	return 0;
 }
 
-std::string getMove(const int piles[], int Player)
+string getMove(const int piles[], int Player)
 {
 	//TODO:
 	//Ask the player for their move
 	//Ask for pile, then number of rocks to remove (make sure both are valid input)
 	//return the move as a string
-	std::string temp = "";
+	string temp = "";
 	return temp;
 }
 
-int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string remotePort, int localPlayer)
+int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int localPlayer)
 {
 	// This function plays the game and returns the value: winner.  This value 
 	// will be one of the following values: noWinner, CWinner, PWinner, ABORT
 	int winner = noWinner;
-	std::string initialBoardConfig; //Contains the initial mnnnnnnnn format
+	string initialBoardConfig; //Contains the initial mnnnnnnnn format
 	int piles[9]; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
-	std::string move;
+	string move;
 	bool myMove;
 
 	if (localPlayer == PCLIENT) {
@@ -118,7 +120,7 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 			//Is the player just sending a comment?
 			//Is the move they sent invalid?
 
-			std::cout << "Board after your move:" << std::endl;
+			cout << "Board after your move:" << endl;
 
 			updateBoard(piles,move,localPlayer);
 			displayBoard(piles);
@@ -131,7 +133,7 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 			int numBytesSent = UDP_send(s, mutableMove, strlen(mutableMove) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
 		} else {
-			std::cout << "Waiting for your opponent's move..." << std::endl << std::endl;
+			cout << "Waiting for your opponent's move..." << endl << endl;
 
 			//Get opponent's move & display board
 			int status = wait(s,WAIT_TIME,0);
@@ -142,7 +144,7 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 				char remotePort[v4AddressSize];
 				int numBytesRecvd = UDP_recv(s, moveStr, MAX_RECV_BUF, remoteHost, remotePort);
 
-				std::string move = moveStr;
+				string move = moveStr;
 				//TODO: Some checks on the move recieved (probably a function)
 				//Did they forfeit?
 				//Are they just sending a comment?
@@ -160,7 +162,7 @@ int playNim(SOCKET s, std::string serverName, std::string remoteIP, std::string 
 		myMove = !myMove;
 
 		if (winner == ABORT) {
-			std::cout << timestamp() << " - No response from opponent.  Aborting the game..." << std::endl;
+			cout << timestamp() << " - No response from opponent.  Aborting the game..." << endl;
 		} else {
 			winner = check4Win(piles);
 		}
