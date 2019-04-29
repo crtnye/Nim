@@ -12,8 +12,14 @@
 using namespace std;
 
 //Returns the initial pile configuration 
-string initializeBoard(int piles[])
+string initializeBoard(int piles[9])
 {
+	//TODO:
+	//Initialize the game board
+	//Calculate a random number of piles between 3 and 9 inclusive
+	//Calculate a random number of rocks between 1 and 20 inclusive for each pile
+	//Populate piles[] with the data as it is generated
+	//Build the return string
 	srand(time(0));
 	int maxPiles = rand() % 9 + 3;
 	char t[3];
@@ -23,8 +29,7 @@ string initializeBoard(int piles[])
 
 	for (int i = 0; i < maxPiles; i++) {
 		piles[i] = rand() % 20 + 1;
-		int x = piles[i];
-		itoa(x, t, 10);
+		itoa(piles[i], t, 10);
 		if (piles[i] < 10) {
 			temp.append("0");
 			temp.append(t);
@@ -33,6 +38,7 @@ string initializeBoard(int piles[])
 			temp.append(t);
 		}
 	}
+	
 	return temp;
 }
 
@@ -77,8 +83,6 @@ string getMove(const int piles[], int Player)
 	//Ask the player for their move
 	//Ask for pile, then number of rocks to remove (make sure both are valid input)
 	//return the move as a string
-
-
 	string temp = "";
 	return temp;
 }
@@ -89,7 +93,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	// will be one of the following values: noWinner, CWinner, PWinner, ABORT
 	int winner = noWinner;
 	string initialBoardConfig; //Contains the initial mnnnnnnnn format
-	int piles[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
+	int piles[9]; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
 	string move;
 	bool myMove;
@@ -103,8 +107,6 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		initialBoardConfig = initializeBoard(piles);
 
 		//TODO: Send intialBoardConfig to the server using UDP_send
-
-
 	}
 
 	displayBoard(piles);
