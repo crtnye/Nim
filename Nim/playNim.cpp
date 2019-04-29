@@ -12,33 +12,34 @@
 using namespace std;
 
 //Returns the initial pile configuration
-string initializeBoard(int piles[])
+string initializeBoard(Piles &piles)
 {
 	srand(time(0));
 	int maxPiles = rand() % 9 + 3;
+	piles.numPiles = maxPiles;
 	char t[3];
 	itoa(maxPiles, t, 10);
-	string temp;
-	temp.append(t);
+	strcat(piles.board, t);
 
 	for (int i = 0; i < maxPiles; i++) {
-		//piles[i] = rand() % 20 + 1;
-		//int x = piles[i];
+		//piles.pile[i] = rand() % 20 + 1;
+		//int x = piles.pile[i];
 		int x = rand() % 20 + 1;
-		piles[i] = x;
+		piles.pile[i] = x;
 		itoa(x, t, 10);
-		if (piles[i] < 10) {
-			temp.append("0");
-			temp.append(t);
+		if (piles.pile[i] < 10) {
+
+			strcat(piles.board, "0");
+			strcat(piles.board, t);
 		}
 		else {
-			temp.append(t);
+			strcat(piles.board, t);
 		}
 	}
-	return temp;
+	return piles.board;
 }
 
-void updateBoard(int piles[], string move, int Player)
+void updateBoard(Piles &piles, string move, int Player)
 {
 	//TODO: Update the piles array to reflect the move
 	istringstream iss(move.substr(0,1));
@@ -49,24 +50,23 @@ void updateBoard(int piles[], string move, int Player)
 	istringstream iss2(move.substr(1, 2));
 	iss2 >> r;
 
-	piles[p] -= r;
+	piles.pile[p] -= r;
 
 }
 
-void displayBoard(int piles[])
+void displayBoard(Piles &piles)
 {
 	//TODO: Display the game board
-	for (int i = 0; i < *piles; i++) {
-		cout << "PILE " << i << ": ";
-		for (int f = 0; f < piles[i]; i++) {
+	for (int i = 0; i < piles.numPiles; i++) {
+		cout << "PILE " << i + 1 << ": ";
+		for (int f = 0; f < piles.pile[i]; f++) {
 			cout << "*";
 		}
-
-		cout << right << setw(12) << "PILE " << i << ": " << piles[i] << endl;
+		cout << right << setw(12) << "PILE " << i + 1 << ": " << piles.pile[i] << endl;
 	}
 }
 
-int check4Win(int piles[])
+int check4Win(Piles &piles)
 {
 	//TODO: Check to see if the game is over
 	//Notify the player if the game is over and who won.
@@ -95,7 +95,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	// will be one of the following values: noWinner, CWinner, PWinner, ABORT
 	int winner = noWinner;
 	string initialBoardConfig; //Contains the initial mnnnnnnnn format
-	int piles[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
+	Piles piles; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
 	string move;
 	bool myMove;
