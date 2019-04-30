@@ -39,6 +39,29 @@ string initializeBoard(Piles &piles)
 	return piles.board;
 }
 
+void populateBoard(Piles &piles, char boardConfig[]) {
+	strcpy(piles.board, boardConfig);
+
+	string board(boardConfig);
+	istringstream iss(board.substr(0, 1));
+	int p;
+	iss >> p;
+
+	piles.numPiles = p;
+
+	//istringstream iss2(board.substr(1, 2));
+
+	int startIndex = 1;
+	for (int i = 0; i < p; i++) {
+		int r;
+		istringstream iss2(board.substr(startIndex, 2));
+		iss2 >> r;
+
+		piles.pile[i] = r;
+		startIndex += 2;
+	}
+}
+
 void updateBoard(Piles &piles, string move, int Player)
 {
 	//Update the piles array to reflect the move
@@ -168,6 +191,12 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	if (localPlayer == PCLIENT) {
 		opponent = PSERVER;
 		myMove = true;
+		char recvBuffer[MAX_RECV_BUF];
+
+		int numBytesRecvd = UDP_recv(s, recvBuffer, MAX_RECV_BUF, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
+		//strcpy(piles.board, recvBuffer);
+		populateBoard(piles, recvBuffer);
+
 	} else {
 		opponent = PCLIENT;
 		myMove = false;
