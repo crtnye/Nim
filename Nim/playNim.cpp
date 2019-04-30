@@ -97,10 +97,14 @@ void displayBoard(Piles &piles)
 	}
 }
 
-int check4Win(Piles &piles, int localPlayer)
+int check4Win(Piles &piles, int localPlayer, int opponent)
 {
 	//Check to see if the game is over
 	//Notify the player if the game is over and who won.
+	//const int PCLIENT = 1;
+	//const int PSERVER = 2;
+
+
 	int winner;
 	int totalRocks = 0;
 
@@ -109,19 +113,26 @@ int check4Win(Piles &piles, int localPlayer)
 	}
 
 	if (totalRocks == 1) {
-		if (localPlayer == 1) {
-			winner = 2;
-		}
-		else {
-			winner = 1;
-		}
-	}
-	else if (totalRocks == 0) {
-		winner = localPlayer;
+		winner = CWinner;
 	}
 	else {
 		winner = noWinner;
 	}
+
+	//if (totalRocks == 1) {
+	//	if (localPlayer == PCLIENT) {
+	//		winner = 2;
+	//	}
+	//	else {
+	//		winner = 1;
+	//	}
+	//}
+	//else if (totalRocks == 0) {
+	//	winner = localPlayer;
+	//}
+	//else {
+	//	winner = noWinner;
+	//}
 	return winner;
 }
 
@@ -237,6 +248,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 			else {
 				cout << "Board after your move:" << endl;
 
+				//Update the board to reflect the move I just made
 				updateBoard(piles, move, localPlayer);
 				displayBoard(piles);
 
@@ -290,6 +302,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 						cout << "You won by default!" << endl;
 					}
 					else{
+						//Update the board to reflect the move you just recieved
 						updateBoard(piles, move, opponent);
 						displayBoard(piles);
 					}
@@ -307,7 +320,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		if (winner == ABORT) {
 			cout << timestamp() << " - No response from opponent.  Aborting the game..." << endl;
 		} else {
-			winner = check4Win(piles, localPlayer);
+			winner = check4Win(piles, localPlayer, opponent);
 		}
 	}
 	return winner;
