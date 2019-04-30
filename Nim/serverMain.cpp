@@ -45,9 +45,16 @@ int serverMain(int argc, char argv[], std::string playerName)
 				int bytesSent = UDP_send(s, "YES", 5, (char*)host.c_str(), (char*)port.c_str());
 				int status = wait(s, 2, 0);
 				int len = UDP_recv(s, buffer, MAX_RECV_BUF, (char*)host.c_str(), (char*)port.c_str());
-				if (status > 0 && strcmp(buffer, "GREAT!") == 0) {
+				if (status > 0 && strcmp(buffer, "GREAT!\0") == 0) {
 					// Play the game.  You are the 'O' player
 					int winner = playNim(s, (char*)playerName.c_str(), (char*)host.c_str(), (char*)port.c_str(), PSERVER);
+					
+					if (winner == PSERVER) {
+						cout << "YOU WON!" << endl;
+					}
+					else {
+						cout << "You lost, Sorry!" << endl;
+					}
 					finished = true;
 				}
 				wait(s, 5, 0);

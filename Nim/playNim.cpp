@@ -112,27 +112,31 @@ int check4Win(Piles &piles, int localPlayer, int opponent)
 		totalRocks += piles.pile[i];
 	}
 
-	if (totalRocks == 1) {
-		winner = CWinner;
-	}
-	else {
-		winner = noWinner;
-	}
-
 	//if (totalRocks == 1) {
-	//	if (localPlayer == PCLIENT) {
-	//		winner = 2;
-	//	}
-	//	else {
-	//		winner = 1;
-	//	}
-	//}
-	//else if (totalRocks == 0) {
-	//	winner = localPlayer;
+	//	winner = CWinner;
 	//}
 	//else {
 	//	winner = noWinner;
 	//}
+
+	if (totalRocks == 0) {
+		if (localPlayer == PCLIENT) {
+			//you just took the last rock and you lost
+			//winner = PCLIENT;
+			winner = PSERVER;
+		}
+		else { //localPlayer == PSERVER
+			//your opponent just took the last rock and you win
+			//winner = PSERVER;
+			winner = PCLIENT;
+		}
+	}
+	else if (totalRocks == 0) {
+		winner = localPlayer;
+	}
+	else {
+		winner = noWinner;
+	}
 	return winner;
 }
 
@@ -151,14 +155,28 @@ void getMove(Piles &piles, int Player, char move[])
 
 
 		if (command[0] == 'C' || command[0] == 'c') {
+
 			validCommand = true;
-			char comment[80];
-			comment[0] = 'C';
-			char input[79];
-			cout << endl << "Comment?";
+			//char comment[80];
+			//comment[0] = 'C';
+			string input;
+			string commandS = "";
+
+			commandS += "C";
+			cout << endl << "Comment? ";
 			cin >> input;
-			strcat(comment, input);
+			commandS += input;
+
+			char *comment = (char*)commandS.c_str();
+
+			//char input[78];
+			//strcpy(comment, "C");
+			//cout << endl << "Comment?";
+			//cin >> input;
+			//strcat(comment, input);
+			//strcat(comment, "\0");
 			strcpy(move, comment);
+
 		}
 		else if (command[0] == 'F' || command[0] == 'f') {
 			validCommand = true;
@@ -235,14 +253,18 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 			// Get my move & display board
 			char move[MAX_SEND_BUF];
 			getMove(piles, localPlayer, move);
-			move[strlen(move)] = '\0';
+			//strcat(move, '\0');
+			//move[strlen(move)] = '\0';
 
 			int numBytesSent = UDP_send(s, move, strlen(move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
-			if (move[0] == 'C') {
+			while (move[0] == 'C') {
 				cout << "Your comment has been sent." << endl;
+				getMove(piles, localPlayer, move);
+				int numBytesSent = UDP_send(s, move, strlen(move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 			}
-			else if (move[0] == 'F') {
+
+			if (move[0] == 'F') {
 				winner = opponent;
 			}
 			else {
@@ -251,7 +273,6 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 				//Update the board to reflect the move I just made
 				updateBoard(piles, move, localPlayer);
 				displayBoard(piles);
-
 			}
 		} else {
 			cout << "Waiting for your opponent's move..." << endl << endl;
@@ -268,7 +289,6 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 				char flag = moveStr[0];
 
 				if (flag == 'C') {
-					//sending a comment
 					char comment[80];
 					//Eliminate the leading 'C' from the string
 					//I couldn't find a better way to do it
@@ -283,6 +303,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 					//if the other player forfeited
 					winner = localPlayer;
 					cout << "You won by default!" << endl;
+					myMove = !myMove;
 				}
 				else if (1 <= (flag - '0') <= 9){
 					//if they sent a potentially valid move
