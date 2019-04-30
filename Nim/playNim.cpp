@@ -165,11 +165,17 @@ char* getMove(Piles &piles, int Player)
 				cin >> numRocks;
 			}
 			//put the move into message
-			strcpy(message, (char*)selectedPile);
+			char p[2];
+			itoa(selectedPile, p, 10);
+			strcpy(message, p);
+
 			if (numRocks < 10) {
 				strcat(message, "0");
 			}
-			strcat(message, (char*)numRocks);
+
+			char r[3];
+			itoa(numRocks, r, 10);
+			strcat(message, r);
 		}
 		else {
 			cout << "Invalid command." << endl;
