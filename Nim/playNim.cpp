@@ -164,7 +164,7 @@ char* getMove(Piles &piles, int Player)
 			cout << endl << "How many rocks?";
 			cin >> numRocks;
 
-			while (selectedPile < 1 || selectedPile > piles.numPiles || piles.pile[selectedPile] - numRocks < 0) {
+			while (selectedPile < 1 || selectedPile-1 > piles.numPiles || piles.pile[selectedPile-1] - numRocks < 0) {
 				cout << "I'm sorry, you selected an invalid move. Please try again." << endl;
 
 				cout << "Which pile? ";
