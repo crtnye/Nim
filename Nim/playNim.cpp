@@ -15,7 +15,7 @@ using namespace std;
 string initializeBoard(Piles &piles)
 {
 	srand(time(0));
-	int maxPiles = rand() % 9 + 3;
+	int maxPiles = (rand() % 9) + 3;
 	piles.numPiles = maxPiles;
 	char t[3];
 	itoa(maxPiles, t, 10);
@@ -24,7 +24,7 @@ string initializeBoard(Piles &piles)
 	for (int i = 0; i < maxPiles; i++) {
 		//piles.pile[i] = rand() % 20 + 1;
 		//int x = piles.pile[i];
-		int x = rand() % 20 + 1;
+		int x = (rand() % 20) + 1;
 		piles.pile[i] = x;
 		itoa(x, t, 10);
 		if (piles.pile[i] < 10) {
@@ -109,7 +109,7 @@ char* getMove(Piles &piles, int Player)
 		cin >> command;
 
 
-		if (command[0] == 'C') {
+		if (command[0] == 'C' || command[0] == 'c') {
 			validCommand = true;
 			char comment[80];
 			comment[0] = 'C';
@@ -119,12 +119,12 @@ char* getMove(Piles &piles, int Player)
 			strcat(comment, input);
 			strcpy(message, comment);
 		}
-		else if (command[0] == 'F') {
+		else if (command[0] == 'F' || command[0] == 'f') {
 			validCommand = true;
 			cout << endl << "You forfeited, you lose." << endl;
 			strcpy(message, (char*)'F');
 		}
-		else if (command[0] == 'R') {
+		else if (command[0] == 'R' || command[0] == 'r') {
 			validCommand = true;
 			int selectedPile;
 			int numRocks;
