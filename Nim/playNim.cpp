@@ -136,9 +136,8 @@ int check4Win(Piles &piles, int localPlayer, int opponent)
 	return winner;
 }
 
-char* getMove(Piles &piles, int Player)
+void getMove(Piles &piles, int Player, char move[])
 {
-	char message[MAX_SEND_BUF];
 
 	cout << "It's your turn!" << endl;
 	bool validCommand = false;
@@ -159,12 +158,12 @@ char* getMove(Piles &piles, int Player)
 			cout << endl << "Comment?";
 			cin >> input;
 			strcat(comment, input);
-			strcpy(message, comment);
+			strcpy(move, comment);
 		}
 		else if (command[0] == 'F' || command[0] == 'f') {
 			validCommand = true;
 			cout << endl << "You forfeited, you lose." << endl;
-			strcpy(message, (char*)'F');
+			strcpy(move, (char*)'F');
 		}
 		else if (command[0] == 'R' || command[0] == 'r') {
 			validCommand = true;
@@ -186,21 +185,20 @@ char* getMove(Piles &piles, int Player)
 			//put the move into message
 			char p[2];
 			itoa(selectedPile, p, 10);
-			strcpy(message, p);
+			strcpy(move, p);
 
 			if (numRocks < 10) {
-				strcat(message, "0");
+				strcat(move, "0");
 			}
 
 			char r[3];
 			itoa(numRocks, r, 10);
-			strcat(message, r);
+			strcat(move, r);
 		}
 		else {
 			cout << "Invalid command." << endl;
 		}
 	}
-	return message;
 }
 
 int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int localPlayer)
@@ -235,7 +233,9 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	while (winner == noWinner) {
 		if (myMove) {
 			// Get my move & display board
-			char *move = getMove(piles, localPlayer);
+			char move[MAX_SEND_BUF];
+			getMove(piles, localPlayer, move);
+			move[strlen(move)] = '\0';
 
 			int numBytesSent = UDP_send(s, move, strlen(move) + 1, (char*)remoteIP.c_str(), (char*)remotePort.c_str());
 
@@ -297,11 +297,12 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 					iss2 >> numRocks;
 
 					//if the other player sent you an invalid move
-					if (selectedPile < 1 || selectedPile > piles.numPiles || piles.pile[selectedPile] - numRocks < 0) {
+					if (selectedPile < 1 || selectedPile - 1 > piles.numPiles || piles.pile[selectedPile - 1] - numRocks < 0) {
 						winner = localPlayer;
 						cout << "You won by default!" << endl;
 					}
 					else{
+						cout << "Your opponent just removed " << numRocks << " from pile " << selectedPile << endl;
 						//Update the board to reflect the move you just recieved
 						updateBoard(piles, move, opponent);
 						displayBoard(piles);

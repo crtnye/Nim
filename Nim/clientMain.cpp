@@ -85,7 +85,7 @@ int clientMain(int argc, char *argv, std::string playerName)
 				int recvLen = UDP_recv(s, recvBuffer, strlen(recvBuffer) + 1, (char*)host.c_str(), (char*)port.c_str());
 
 				if (status > 0 && strcmp(recvBuffer, "YES") == 0) {
-					char confirm[MAX_SEND_BUF] = "GREAT!";
+					char confirm[MAX_SEND_BUF] = "GREAT!\0";
 					int len = UDP_send(s, confirm, strlen(confirm) + 1, (char*)host.c_str(), (char*)port.c_str());
 
 					opponentSelected = true;
