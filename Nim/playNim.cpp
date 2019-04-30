@@ -97,7 +97,7 @@ void displayBoard(Piles &piles)
 	}
 }
 
-int check4Win(Piles &piles, int localPlayer, int opponent)
+int check4Win(Piles &piles, int localPlayer, int opponent, int turn)
 {
 	//Check to see if the game is over
 	//Notify the player if the game is over and who won.
@@ -120,20 +120,20 @@ int check4Win(Piles &piles, int localPlayer, int opponent)
 	//}
 
 	if (totalRocks == 0) {
-		if (localPlayer == PCLIENT) {
+		if (localPlayer == turn) {
 			//you just took the last rock and you lost
 			//winner = PCLIENT;
-			winner = PSERVER;
+			winner = opponent;
 		}
 		else { //localPlayer == PSERVER
 			//your opponent just took the last rock and you win
 			//winner = PSERVER;
-			winner = PCLIENT;
+			winner = localPlayer;
 		}
 	}
-	else if (totalRocks == 0) {
-		winner = localPlayer;
-	}
+	//else if (totalRocks == 0) {
+	//	winner = localPlayer;
+	//}
 	else {
 		winner = noWinner;
 	}
@@ -227,6 +227,7 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 	string initialBoardConfig; //Contains the initial mnnnnnnnn format
 	Piles piles; //Keeps track of the piles during gameplay. piles[0] contains the number of rocks the first pile has left.
 	int opponent;
+	int turn;
 	bool myMove;
 
 	if (localPlayer == PCLIENT) {
@@ -273,6 +274,8 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 				//Update the board to reflect the move I just made
 				updateBoard(piles, move, localPlayer);
 				displayBoard(piles);
+				turn = localPlayer;
+				winner = check4Win(piles, localPlayer, opponent, turn);
 			}
 		} else {
 			cout << "Waiting for your opponent's move..." << endl << endl;
@@ -327,6 +330,8 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 						//Update the board to reflect the move you just recieved
 						updateBoard(piles, move, opponent);
 						displayBoard(piles);
+						turn = opponent;
+						winner = check4Win(piles, localPlayer, opponent, turn);
 					}
 				}
 				else {
@@ -341,9 +346,9 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 
 		if (winner == ABORT) {
 			cout << timestamp() << " - No response from opponent.  Aborting the game..." << endl;
-		} else {
+		} /*else {
 			winner = check4Win(piles, localPlayer, opponent);
-		}
+		}*/
 	}
 	return winner;
 }
