@@ -41,7 +41,7 @@ string initializeBoard(Piles &piles)
 
 void updateBoard(Piles &piles, string move, int Player)
 {
-	//TODO: Update the piles array to reflect the move
+	//Update the piles array to reflect the move
 	istringstream iss(move.substr(0,1));
 	int p;
 	iss >> p;
@@ -56,7 +56,7 @@ void updateBoard(Piles &piles, string move, int Player)
 
 void displayBoard(Piles &piles)
 {
-	//TODO: Display the game board
+	//Display the game board
 	for (int i = 0; i < piles.numPiles; i++) {
 		cout << "PILE " << i + 1 << ": ";
 		for (int f = 0; f < piles.pile[i]; f++) {
@@ -66,11 +66,32 @@ void displayBoard(Piles &piles)
 	}
 }
 
-int check4Win(Piles &piles)
+int check4Win(Piles &piles, int localPlayer)
 {
-	//TODO: Check to see if the game is over
+	//Check to see if the game is over
 	//Notify the player if the game is over and who won.
-	return 0;
+	int winner;
+	int totalRocks = 0;
+
+	for (int i = 0; i < piles.numPiles; i++) {
+		totalRocks += piles.pile[i];
+	}
+
+	if (totalRocks == 1) {
+		if (localPlayer == 1) {
+			winner = 2;
+		}
+		else {
+			winner = 1;
+		}
+	}
+	else if (totalRocks == 0) {
+		winner = localPlayer;
+	}
+	else {
+		winner = noWinner;
+	}
+	return winner;
 }
 
 char* getMove(Piles &piles, int Player)
@@ -189,17 +210,51 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 				char remotePort[v4AddressSize];
 				int numBytesRecvd = UDP_recv(s, moveStr, MAX_RECV_BUF, remoteHost, remotePort);
 
-				string move = moveStr;
-				//TODO: Some checks on the move recieved (probably a function)
-				//Did they forfeit?
-				//Are they just sending a comment?
-				//Is the move they sent invalid?
+				char flag = moveStr[0];
 
+				if (flag == 'C') {
+					//sending a comment
+					char comment[80];
+					//Eliminate the leading 'C' from the string
+					//I couldn't find a better way to do it
+					for (int i = 0; i < strlen(moveStr); i++) {
+						comment[i] = moveStr[i + 1];
+					}
 
+					cout << "[CHAT MESSAGE]: " << comment << endl;
 
-				updateBoard(piles, move, opponent);
-				displayBoard(piles);
+				}
+				else if (flag == 'F') {
+					//if the other player forfeited
+					winner = localPlayer;
+					cout << "You won by default!" << endl;
+				}
+				else if (1 <= (flag - '0') <= 9){
+					//if they sent a potentially valid move
+					int selectedPile;
+					int numRocks;
+					string move(moveStr);
+					
+					istringstream iss(move.substr(0, 1));
+					iss >> selectedPile;
 
+					istringstream iss2(move.substr(1, 2));
+					iss2 >> numRocks;
+
+					//if the other player sent you an invalid move
+					if (selectedPile < 1 || selectedPile > piles.numPiles || piles.pile[selectedPile] - numRocks < 0) {
+						winner = localPlayer;
+						cout << "You won by default!" << endl;
+					}
+					else{
+						updateBoard(piles, move, opponent);
+						displayBoard(piles);
+					}
+				}
+				else {
+					winner = localPlayer;
+					cout << "You won by default!" << endl;
+				}
 			} else {
 				winner = ABORT;
 			}
@@ -209,9 +264,8 @@ int playNim(SOCKET s, string serverName, string remoteIP, string remotePort, int
 		if (winner == ABORT) {
 			cout << timestamp() << " - No response from opponent.  Aborting the game..." << endl;
 		} else {
-			winner = check4Win(piles);
+			winner = check4Win(piles, localPlayer);
 		}
-
 	}
 	return winner;
 }
