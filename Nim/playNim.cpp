@@ -14,8 +14,12 @@ using namespace std;
 //Returns the initial pile configuration
 string initializeBoard(Piles &piles)
 {
+	int maxPiles;
 	srand(time(0));
-	int maxPiles = (rand() % 9) + 3;
+		maxPiles = (rand() % 9) + 3;
+		if (maxPiles > 9 || maxPiles < 3) {
+			maxPiles = 5;
+		}
 	piles.numPiles = maxPiles;
 	char t[3];
 	itoa(maxPiles, t, 10);
@@ -24,7 +28,11 @@ string initializeBoard(Piles &piles)
 	for (int i = 0; i < maxPiles; i++) {
 		//piles.pile[i] = rand() % 20 + 1;
 		//int x = piles.pile[i];
-		int x = (rand() % 20) + 1;
+		int x;
+				x = (rand() % 20) + 1;
+				if (x < 1 || x > 20) {
+					x = 5;
+				}
 		piles.pile[i] = x;
 		itoa(x, t, 10);
 		if (piles.pile[i] < 10) {
@@ -73,7 +81,7 @@ void updateBoard(Piles &piles, string move, int Player)
 	istringstream iss2(move.substr(1, 2));
 	iss2 >> r;
 
-	piles.pile[p] -= r;
+	piles.pile[p-1] -= r;
 
 }
 
